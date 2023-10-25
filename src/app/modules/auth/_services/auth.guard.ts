@@ -16,9 +16,8 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(["/auth/login"]);
       return false;
     }
-    let token = this.authService.token;
-    let expirado = (JSON.parse(atob(token!.split('.')[1]))).exp;
-    if((Math.floor((new Date).getTime() / 1000)) >= expirado){
+
+    if(!this.authService.getUserByToken()){
       this.authService.logout();
       return false;
     }else{

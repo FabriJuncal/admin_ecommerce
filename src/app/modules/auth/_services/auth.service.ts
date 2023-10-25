@@ -7,7 +7,7 @@ import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { URL_SERVICIOS } from 'src/app/config/config';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +35,7 @@ export class AuthService implements OnDestroy {
   user: any;
   token: string;
   constructor(
-    // private authHttpService: AuthHTTPService,
+    private authHttpService: AuthHTTPService,
     private http: HttpClient,
     private router: Router
   ) {
@@ -61,57 +61,57 @@ export class AuthService implements OnDestroy {
   isLogued() {
     return ( this.token.length > 5 ) ? true : false;
   }
-login(email: string, password: string) {
+  login(email: string, password: string) {
+      this.isLoadingSubject.next(true);
+      let url = URL_SERVICIOS + "/auth/login";
+      console.log({email, password})
+      return this.http.post(url,{email, password}).pipe(
+        map((auth: any) => {
+          console.log('auth.access_token->',auth.access_token)
+            if(auth.access_token){
+              return this.setAuthFromLocalStorage(auth);
+            }else{
+              return auth;
+            }
+        }),
+        // switchMap(() => this.getUserByToken()),
+        catchError((err) => {
+          console.error('err', err);
+          return of(undefined);
+        }),
+        finalize(() => this.isLoadingSubject.next(false))
+      );
+  }
+  logout() {
+      // localStorage.removeItem(this.authLocalStorageToken);
+      this.user = null;
+      this.token = '';
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      this.router.navigate(['/auth/login'], {
+        queryParams: {},
+      });
+  }
+
+  getUserByToken(): Observable<UserModel> {
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.accessToken) {
+      return of(undefined);
+    }
+
     this.isLoadingSubject.next(true);
-    let url = URL_SERVICIOS + "/users/login";
-    console.log({email, password})
-    return this.http.post(url,{email, password}).pipe(
-      map((auth: any) => {
-        console.log(auth)
-          if(auth.access_token){
-            return this.setAuthFromLocalStorage(auth);
-          }else{
-            return auth;
-          }
-      }),
-      // switchMap(() => this.getUserByToken()),
-      catchError((err) => {
-        console.error('err', err);
-        return of(undefined);
+    return this.authHttpService.getUserByToken(auth.accessToken).pipe(
+      map((user: UserModel) => {
+        if (user) {
+          this.currentUserSubject = new BehaviorSubject<UserModel>(user);
+        } else {
+          this.logout();
+        }
+        return user;
       }),
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
-logout() {
-    // localStorage.removeItem(this.authLocalStorageToken);
-    this.user = null;
-    this.token = '';
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.router.navigate(['/auth/login'], {
-      queryParams: {},
-    });
-  }
-
-  // getUserByToken(): Observable<UserModel> {
-  //   const auth = this.getAuthFromLocalStorage();
-  //   if (!auth || !auth.accessToken) {
-  //     return of(undefined);
-  //   }
-
-  //   this.isLoadingSubject.next(true);
-  //   return this.authHttpService.getUserByToken(auth.accessToken).pipe(
-  //     map((user: UserModel) => {
-  //       if (user) {
-  //         this.currentUserSubject = new BehaviorSubject<UserModel>(user);
-  //       } else {
-  //         this.logout();
-  //       }
-  //       return user;
-  //     }),
-  //     finalize(() => this.isLoadingSubject.next(false))
-  //   );
-  // }
 
   // // need create new user then login
   // registration(user: UserModel): Observable<any> {
@@ -142,8 +142,8 @@ logout() {
     if (auth.access_token && auth.user) {
       localStorage.setItem('token', auth.access_token );
       localStorage.setItem('user', JSON.stringify(auth.user));
-      this.user = auth.access_token;
-      this.token = auth.user;
+      this.user = auth.user; 
+      this.token = auth.access_token;
       return true;
     }
     return false;

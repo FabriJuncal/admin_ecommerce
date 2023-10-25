@@ -13,14 +13,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   // KeenThemes mock, change it to:
-  // defaultAuth = {
-  //   email: '',
-  //   password: '',
-  // };
   defaultAuth: any = {
-    email: 'admin@demo.com',
-    password: 'demo',
+    email: '',
+    password: '',
   };
+  // defaultAuth: any = {
+  //   email: 'admin@demo.com',
+  //   password: 'demo',
+  // };
   loginForm: FormGroup;
   hasError: boolean;
   returnUrl: string;
@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     //     }
     //   });
     this.authService.login(this.f.email.value, this.f.password.value).subscribe((resp:any)=>{
-      console.log(resp)
+      console.log('this.authService.login->',resp)
       // this.router.navigate(['/dashboard']);
       if (resp) {
           // this.router.navigate([this.  returnUrl]);
@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.hasError = true;
       }
     },(error:any)=>{
-      console.log(error)
+      console.error(error)
       if(error.error.error=="Unauthorized"){
         // this.toastr.error('Upps!!', 'Las Credenciales Ingresadas No Existen');
         this.hasError = true;
