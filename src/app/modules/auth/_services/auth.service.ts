@@ -1,13 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
-import { map, catchError, switchMap, finalize } from 'rxjs/operators';
+import { map, catchError, finalize } from 'rxjs/operators';
 import { UserModel } from '../_models/user.model';
 import { AuthModel } from '../_models/auth.model';
-import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { URL_SERVICIOS } from 'src/app/config/config';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthHTTPService } from './auth-http/auth-http.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +34,6 @@ export class AuthService implements OnDestroy {
   token: string;
   constructor(
     private authHttpService: AuthHTTPService,
-    private http: HttpClient,
     private router: Router
   ) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -63,9 +60,7 @@ export class AuthService implements OnDestroy {
   }
   login(email: string, password: string) {
       this.isLoadingSubject.next(true);
-      let url = URL_SERVICIOS + "/auth/login";
-      console.log({email, password})
-      return this.http.post(url,{email, password}).pipe(
+      return this.authHttpService.login(email, password).pipe(
         map((auth: any) => {
           console.log('auth.access_token->',auth.access_token)
             if(auth.access_token){
