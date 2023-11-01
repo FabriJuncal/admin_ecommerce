@@ -5,6 +5,7 @@ import { SocialNetworksModel } from './social-networks.model';
 export class UserModel extends AuthModel {
   id: number;
   username: string;
+  type_user: number;
   password: string;
   fullname: string;
   email: string;

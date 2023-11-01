@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
-import { map, catchError, finalize } from 'rxjs/operators';
+import { map, catchError, finalize, switchMap } from 'rxjs/operators';
 import { UserModel } from '../_models/user.model';
 import { AuthModel } from '../_models/auth.model';
 import { environment } from 'src/environments/environment';
@@ -20,6 +20,7 @@ export class AuthService implements OnDestroy {
   isLoading$: Observable<boolean>;
   currentUserSubject: BehaviorSubject<UserModel>;
   isLoadingSubject: BehaviorSubject<boolean>;
+  type_user = 2;
 
 
   get currentUserValue(): UserModel {
@@ -60,7 +61,7 @@ export class AuthService implements OnDestroy {
   }
   login(email: string, password: string) {
       this.isLoadingSubject.next(true);
-      return this.authHttpService.login(email, password).pipe(
+      return this.authHttpService.login(email, password, this.type_user).pipe(
         map((auth: any) => {
           console.log('auth.access_token->',auth.access_token)
             if(auth.access_token){
@@ -109,20 +110,21 @@ export class AuthService implements OnDestroy {
   }
 
   // // need create new user then login
-  // registration(user: UserModel): Observable<any> {
-  //   this.isLoadingSubject.next(true);
-  //   return this.authHttpService.createUser(user).pipe(
-  //     map(() => {
-  //       this.isLoadingSubject.next(false);
-  //     }),
-  //     switchMap(() => this.login(user.email, user.password)),
-  //     catchError((err) => {
-  //       console.error('err', err);
-  //       return of(undefined);
-  //     }),
-  //     finalize(() => this.isLoadingSubject.next(false))
-  //   );
-  // }
+  registration(user: UserModel): Observable<any> {
+    this.isLoadingSubject.next(true);
+    user.type_user = this.type_user;
+    return this.authHttpService.createUser(user).pipe(
+      map(() => {
+        this.isLoadingSubject.next(false);
+      }),
+      switchMap(() => this.login(user.email, user.password)),
+      catchError((err) => {
+        console.error('err', err);
+        return of(undefined);
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
 
   // forgotPassword(email: string): Observable<boolean> {
   //   this.isLoadingSubject.next(true);

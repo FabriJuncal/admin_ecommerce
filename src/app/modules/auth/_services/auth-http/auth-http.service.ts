@@ -14,8 +14,8 @@ export class AuthHTTPService {
   constructor(private http: HttpClient) { }
 
   // public methods
-  login(email: string, password: string): Observable<any> {
-    return this.http.post<AuthModel>(`${API_AUTH_URL}/login`,{ email, password });
+  login(email: string, password: string, type_user: number): Observable<any> {
+    return this.http.post<AuthModel>(`${API_AUTH_URL}/login`,{ email, password, type_user});
   }
 
   // CREATE =>  POST: add a new user to the server
