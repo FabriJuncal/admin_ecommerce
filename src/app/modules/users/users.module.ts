@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users.component';
-// import { UsersListComponent } from './users-list/users-list.component';
+import { UsersListComponent } from './users-list/users-list.component';
 import { AddUsersComponent } from './components/add-users/add-users.component';
 import { EditUsersComponent } from './components/edit-users/edit-users.component';
 import { EditColaboradorComponent } from './components/edit-colaborador/edit-colaborador.component';
@@ -19,7 +19,7 @@ import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 @NgModule({
   declarations: [
     UsersComponent, 
-    // UsersListComponent, 
+    UsersListComponent, 
     AddUsersComponent, 
     EditUsersComponent, 
     EditColaboradorComponent, 

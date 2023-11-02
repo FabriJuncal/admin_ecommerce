@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-// import { UsersListComponent } from './users-list/users-list.component';
+import { UsersListComponent } from './users-list/users-list.component';
 import { UsersComponent } from './users.component';
 
 const routes: Routes = [
@@ -8,13 +8,13 @@ const routes: Routes = [
     path: '',
     component: UsersComponent,
     children: [
-      // {
-      //   path: 'list',
-      //   component: UsersListComponent,
-      // },
+      {
+        path: 'list',
+        component: UsersListComponent,
+      },
       // {
       //   path: 'mi-perfil',
-      //   component: UsersProfileCComponent
+      //   component: UsersProfileComponent
       // },
       { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: '**', redirectTo: 'list', pathMatch: 'full' },
