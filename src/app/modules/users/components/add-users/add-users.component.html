@@ -20,7 +20,9 @@
         </div>
       </ng-container>
 
-      <form action="" class="form form-label-right" [formGroup]="formGroup">
+      <form class="form form-label-right"
+       [formGroup]="formGroup"
+       novalidate="novalidate">
         <div class="form-group row">
             <div class="col-lg-6">
                 <label class="form-label">Nombres Completos: *</label>
@@ -122,7 +124,7 @@
                 <select name="role_id"
                 class="form-control form-control-solid form-control-lg"
                 formControlName="role_id">
-                    <option value="0" selected>--Seleccione un Rol--</option>
+                    <option value="0">--Seleccione un Rol--</option>
                     <option value="1">ADMINISTRADOR GENERAL</option>
                 </select>
             </div>
@@ -130,16 +132,16 @@
         <div class="form-group row">
             <div class="col-lg-6">
                 <label class="form-label">Contraseña: *</label>
-                <input type="text" 
+                <input type="password" 
                 class="form-control form-control-solid form-control-lg"
                 name="password"
                 placeholder="Contraseña"
                 autocomplete="off"
-                [class.is-invalid]="isControlInvalid('password')"
-                [class.is-valid]="isControlValid('password')"
+                [class.is-invalid]="isControlInvalid('password') || !validatePassword"
+                [class.is-valid]="isControlValid('password') && validatePassword"
                 formControlName="password">
     
-                <div class="valid-feedback" *ngIf="isControlValid('password')">
+                <div class="valid-feedback" *ngIf="isControlValid('password') && validatePassword">
                     La contraseña se ingresó correctamente
                 </div>
                 <div
@@ -163,16 +165,16 @@
             </div>
             <div class="col-lg-6">
                 <label class="form-label">Repetir Contraseña: *</label>
-                <input type="text" 
+                <input type="password" 
                 class="form-control form-control-solid form-control-lg"
                 name="cpassword"
                 placeholder="Repetir Contraseña"
                 autocomplete="off"
-                [class.is-invalid]="isControlInvalid('cpassword')"
-                [class.is-valid]="isControlValid('cpassword')"
+                [class.is-invalid]="isControlInvalid('cpassword') || !validatePassword"
+                [class.is-valid]="isControlValid('cpassword') && validatePassword"
                 formControlName="cpassword">
     
-                <div class="valid-feedback" *ngIf="isControlValid('cpassword')">
+                <div class="valid-feedback" *ngIf="isControlValid('cpassword') && validatePassword">
                     La confirmación de la contraseña se ingresó correctamente
                 </div>
                 <div
@@ -194,6 +196,12 @@
                     La confirmación de la contraseña debe tener un máximo de 255 letras
                 </div>
             </div>
+            <div
+            class="validatePassword"
+            *ngIf="!validatePassword"
+             >
+              Las contraseñas no coinciden
+          </div>
         </div>
       </form>
     </div>
@@ -205,6 +213,14 @@
       >
         Cancel
       </button>
+      <button
+      type="submit"
+      class="btn btn-primary btn-elevate mr-2"
+      (click)="save()"
+      [disabled]="formGroup.invalid"
+    >
+      Guardar
+    </button>
 
     </div>
   </div>

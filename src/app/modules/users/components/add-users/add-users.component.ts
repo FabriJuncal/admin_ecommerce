@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersService } from '../../_services/users.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-add-users',
@@ -10,8 +12,10 @@ import { UsersService } from '../../_services/users.service';
 })
 export class AddUsersComponent implements OnInit {
 
+  errorMessage: string;
   isLoading$;
   isLoading = false;
+  validatePassword = true;
 
   formGroup: FormGroup
 
@@ -26,14 +30,20 @@ export class AddUsersComponent implements OnInit {
     this.loadForm();
   }
 
+  // convenience getter for easy access to form fields
+  // get f() {
+  //   return this.formGroup.controls;
+  // }
+
   loadForm(){
     this.formGroup = this.fb.group({
       name: [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       surname: [null, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       email: [null, Validators.compose([Validators.required, Validators.email, Validators.maxLength(255)])],
-      role_id: [0, this.isControlRoleId],
+      role_id: ['0', this.isControlRoleId],
       password: [null, Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(255)])],
-      cpassword: [null, Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(255), this.isControlPassword.bind(this)])],
+      cpassword: [null, Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(255)])],
+      type_user: ['2']
     });
   }
 
@@ -60,22 +70,39 @@ export class AddUsersComponent implements OnInit {
 
   isControlRoleId(control: FormControl){
     const selectedRole = control.value;
-    if(!selectedRole){
+    if(selectedRole === '0'){
       return { roleIdInvalid: true};
     }
 
     return null;
   }
 
-  isControlPassword(control: FormControl){
-    const password = control.get('password').value;
-    const cpassword = control.get('cpassword').value;
+  validateConfirmPassword() {
+    return this.formGroup.value.password === this.formGroup.value.cpassword
+  }
+  
 
-    if (password !== cpassword) {
-      control.get('cpassword').setErrors({ passwordMismatch: true });
-    } else {
-      return null;
+  save(){
+    if(!this.validateConfirmPassword()){
+      this.validatePassword = false;
+      return;
     }
+
+    this._userService.registration(this.formGroup.value)
+    .pipe(
+      catchError((message) => {
+        console.log('catchError->', message);
+        this.errorMessage = message.error.errors;
+        alert(this.errorMessage);
+        return of(undefined);
+      })
+    ).subscribe((resp:any) => {
+      console.log('register->', resp);
+      if(resp.status){
+        alert('EL USUARIO HA SIDO CREADO SATISFACTORIAMENTE');
+      }
+    });
+
   }
 
 }
