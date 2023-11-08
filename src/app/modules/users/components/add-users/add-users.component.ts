@@ -99,7 +99,7 @@ export class AddUsersComponent implements OnInit {
     ).subscribe((resp:any) => {
       console.log('register->', resp);
       if(resp.status){
-        alert('EL USUARIO HA SIDO CREADO SATISFACTORIAMENTE');
+        alert(resp.message);
       }
     });
 
