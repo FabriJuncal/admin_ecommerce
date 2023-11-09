@@ -49,4 +49,22 @@ export class UsersService {
       finalize(() => this.isLoadingSubject.next(false))
     );
    }
+
+   update(user_id, data){
+    this.isLoadingSubject.next(true);
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.AuthService.token})
+    return this.http.put<UserModel>(`${API_AUTH_URL}/update/${user_id}`, data, {headers: headers})
+    .pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+   }
+
+   delete(user_id){
+    this.isLoadingSubject.next(true);
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.AuthService.token})
+    return this.http.delete<UserModel>(`${API_AUTH_URL}/delete/${user_id}`, {headers: headers})
+    .pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+   }
 }

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersService } from '../../_services/users.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Toaster } from 'ngx-toast-notifications';
+import { NoticyAlertComponent } from '../../../../componets/notifications/noticy-alert/noticy-alert.component';
 
 @Component({
   selector: 'app-add-users',
@@ -11,6 +13,8 @@ import { of } from 'rxjs';
   styleUrls: ['./add-users.component.scss']
 })
 export class AddUsersComponent implements OnInit {
+
+  @Output() usersE: EventEmitter<any> = new EventEmitter();
 
   errorMessage: string;
   isLoading$;
@@ -22,7 +26,8 @@ export class AddUsersComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _userService: UsersService,
-    public modal: NgbActiveModal
+    public modal: NgbActiveModal,
+    public toaster: Toaster
   ) { }
 
   ngOnInit(): void {
@@ -91,15 +96,15 @@ export class AddUsersComponent implements OnInit {
     this._userService.registration(this.formGroup.value)
     .pipe(
       catchError((message) => {
-        console.log('catchError->', message);
         this.errorMessage = message.error.errors;
-        alert(this.errorMessage);
+        this.toaster.open(NoticyAlertComponent, {text: `danger-'${this.errorMessage}'`});
         return of(undefined);
       })
     ).subscribe((resp:any) => {
-      console.log('register->', resp);
       if(resp.status){
-        alert(resp.message);
+        this.toaster.open(NoticyAlertComponent, {text: `primary-'${resp.message}'`});
+        this.modal.close();
+        this.usersE.emit(resp.user);
       }
     });
 

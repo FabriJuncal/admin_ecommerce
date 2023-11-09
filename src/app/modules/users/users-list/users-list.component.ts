@@ -4,6 +4,8 @@ import { UsersService } from '../_services/users.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddUsersComponent } from '../components/add-users/add-users.component';
 import { Observable } from 'rxjs';
+import { EditUsersComponent } from '../components/edit-users/edit-users.component';
+import { DeleteUserComponent } from '../components/delete-user/delete-user.component';
 
 @Component({
   selector: 'app-users-list',
@@ -53,6 +55,10 @@ export class UsersListComponent implements OnInit {
         
       }
     )
+
+    modalRef.componentInstance.usersE.subscribe((resp:any) => {
+      this.users.unshift(resp);
+    });
   }
 
   loadPage(index){
@@ -60,11 +66,39 @@ export class UsersListComponent implements OnInit {
   }
 
   editUser(user){
-    
+    const modalRef = this.modelService.open(EditUsersComponent, {centered: true, size: 'md'});
+    modalRef.componentInstance.user_selected = user;
+    modalRef.result.then(
+      () => {
+
+      },
+      () => {
+        
+      }
+    )
+
+    modalRef.componentInstance.usersE.subscribe((resp:any) => {
+      const INDEX = this.users.findIndex(user => user.id === resp.id);
+      this.users[INDEX] = resp;
+    });
   }
 
   delete(user){
-    
+    const modalRef = this.modelService.open(DeleteUserComponent, {centered: true, size: 'md'});
+    modalRef.componentInstance.user_selected = user;
+    modalRef.result.then(
+      () => {
+
+      },
+      () => {
+        
+      }
+    )
+
+    modalRef.componentInstance.usersE.subscribe((resp:any) => {
+      const INDEX = this.users.findIndex(user => user.id === resp.id);
+      this.users.splice(INDEX, 1);
+    });
   }
 
 }

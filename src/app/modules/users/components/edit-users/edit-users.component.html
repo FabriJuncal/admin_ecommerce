@@ -1,1 +1,227 @@
-<p>edit-users works!</p>
+<ng-container *ngIf="isLoading">
+    <div class="progress progress-modal">
+      <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+        style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+  </ng-container>
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        <i class="icon-2x text-dark-50 flaticon-user-add mx-2"></i> Editar Usuario: {{ user_selected.name }}
+      </div>
+    </div>
+    <div
+      class="overlay overlay-block cursor-default modal-body"
+      style="min-height: 404px"
+    >
+      <ng-container *ngIf="isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container>
+
+      <form class="form form-label-right"
+       [formGroup]="formGroup"
+       novalidate="novalidate">
+        <div class="form-group row">
+            <div class="col-lg-6">
+                <label class="form-label">Nombres Completos: *</label>
+                <input type="text" 
+                class="form-control form-control-solid form-control-lg"
+                name="name"
+                placeholder="Nombre"
+                autocomplete="off"
+                [class.is-invalid]="isControlInvalid('name')"
+                [class.is-valid]="isControlValid('name')"
+                formControlName="name">
+    
+                <div class="valid-feedback" *ngIf="isControlValid('name')">
+                    El nombre se ingresó correctamente
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('required', 'name')"
+                >
+                  Se requiere el nombre
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('minlength', 'name')"
+                >
+                  El nombre debe tener al menos 3 letras
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('maxlength', 'name')"
+                >
+                  El nombre debe tener un máximo de 100 letras
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <label class="form-label">Apellidos Completos: *</label>
+                <input type="text" 
+                class="form-control form-control-solid form-control-lg"
+                name="surname"
+                placeholder="Apellido"
+                autocomplete="off"
+                [class.is-invalid]="isControlInvalid('surname')"
+                [class.is-valid]="isControlValid('surname')"
+                formControlName="surname">
+    
+                <div class="valid-feedback" *ngIf="isControlValid('surname')">
+                    El apellido se ingresó correctamente
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('required', 'surname')"
+                >
+                  Se requiere el apellido
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('minlength', 'surname')"
+                >
+                  El apellido debe tener al menos 3 letras
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('maxlength', 'surname')"
+                >
+                  El apellido debe tener un máximo de 100 letras
+                </div>
+            </div>
+        </div>
+        <div class="form-group row justify-content-center">
+            <div class="col-lg-10">
+                <label class="form-label">Correo Electrónico: *</label>
+                <input type="text" 
+                class="form-control form-control-solid form-control-lg"
+                name="email"
+                placeholder="Email"
+                autocomplete="off"
+                [class.is-invalid]="isControlInvalid('email')"
+                [class.is-valid]="isControlValid('email')"
+                formControlName="email">
+    
+                <div class="valid-feedback" *ngIf="isControlValid('email')">
+                    El correo electrónico se ingresó correctamente
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('required', 'email')"
+                >
+                  Se requiere el correo electrónico
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('maxlength', 'email')"
+                >
+                  El correo electrónico debe tener un máximo de 255 letras
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <label class="form-label">Rol: *</label>
+                <select name="role_id"
+                class="form-control form-control-solid form-control-lg"
+                formControlName="role_id">
+                    <option value="0">--Seleccione un Rol--</option>
+                    <option value="1">ADMINISTRADOR GENERAL</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-6">
+                <label class="form-label">Contraseña: *</label>
+                <input type="password" 
+                class="form-control form-control-solid form-control-lg"
+                name="password"
+                placeholder="Contraseña"
+                autocomplete="off"
+                [class.is-invalid]="isControlInvalid('password') || !validatePassword"
+                [class.is-valid]="isControlValid('password') && validatePassword"
+                formControlName="password">
+    
+                <div class="valid-feedback" *ngIf="isControlValid('password') && validatePassword">
+                    La contraseña se ingresó correctamente
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('required', 'password')"
+                >
+                  Se requiere la contraseña
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('minlength', 'password')"
+                >
+                    La contraseña debe tener al menos 8 caracteres
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('maxlength', 'password')"
+                >
+                    La contraseña debe tener un máximo de 255 letras
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <label class="form-label">Repetir Contraseña: *</label>
+                <input type="password" 
+                class="form-control form-control-solid form-control-lg"
+                name="cpassword"
+                placeholder="Repetir Contraseña"
+                autocomplete="off"
+                [class.is-invalid]="isControlInvalid('cpassword') || !validatePassword"
+                [class.is-valid]="isControlValid('cpassword') && validatePassword"
+                formControlName="cpassword">
+    
+                <div class="valid-feedback" *ngIf="isControlValid('cpassword') && validatePassword">
+                    La confirmación de la contraseña se ingresó correctamente
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('required', 'cpassword')"
+                >
+                  Se requiere la confirmación de la contraseña
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('minlength', 'cpassword')"
+                >
+                    La confirmación de la contraseña debe tener al menos 8 letras
+                </div>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="controlHasError('maxlength', 'cpassword')"
+                >
+                    La confirmación de la contraseña debe tener un máximo de 255 letras
+                </div>
+            </div>
+            <div
+            class="validatePassword"
+            *ngIf="!validatePassword"
+             >
+              Las contraseñas no coinciden
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-light btn-elevate mr-2"
+        (click)="modal.dismiss()"
+      >
+        Cancel
+      </button>
+      <button
+      type="submit"
+      class="btn btn-primary btn-elevate mr-2"
+      (click)="save()"
+      [disabled]="formGroup.invalid"
+    >
+      Guardar
+    </button>
+
+    </div>
+  </div>
