@@ -50,7 +50,8 @@ export class EditUsersComponent implements OnInit {
       role_id: [this.user_selected.role_id, this.isControlRoleId],
       password: [null, Validators.compose([Validators.nullValidator, Validators.minLength(8), Validators.maxLength(255)])],
       cpassword: [null, Validators.compose([Validators.nullValidator, Validators.minLength(8), Validators.maxLength(255)])],
-      type_user: ['2']
+      type_user: ['2'],
+      state: [this.user_selected.state]
     });
   }
 

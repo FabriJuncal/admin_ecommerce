@@ -25,7 +25,7 @@
        novalidate="novalidate">
         <div class="form-group row">
             <div class="col-lg-6">
-                <label class="form-label">Nombres Completos: *</label>
+                <label class="form-label">Nombres Completos:</label>
                 <input type="text" 
                 class="form-control form-control-solid form-control-lg"
                 name="name"
@@ -93,7 +93,7 @@
         </div>
         <div class="form-group row justify-content-center">
             <div class="col-lg-10">
-                <label class="form-label">Correo Electrónico: *</label>
+                <label class="form-label">Correo Electrónico:</label>
                 <input type="text" 
                 class="form-control form-control-solid form-control-lg"
                 name="email"
@@ -119,19 +119,30 @@
                   El correo electrónico debe tener un máximo de 255 letras
                 </div>
             </div>
-            <div class="col-lg-10">
-                <label class="form-label">Rol: *</label>
+            <div class="col-lg-10  m-1">
+                <label class="form-label">Rol:</label>
                 <select name="role_id"
                 class="form-control form-control-solid form-control-lg"
                 formControlName="role_id">
                     <option value="0">--Seleccione un Rol--</option>
                     <option value="1">ADMINISTRADOR GENERAL</option>
                 </select>
+              </div>
+            <div class="col-lg-10">
+              <label class="form-label">Estado:</label>
+              <select
+              class="form-control form-control-solid form-control-lg"
+              name="status"
+              placeholder="Selec. Estado"
+              formControlName="state">
+              <option value="1">Activo</option>
+              <option value="2">Inactivo</option>
+              </select>
             </div>
         </div>
         <div class="form-group row">
             <div class="col-lg-6">
-                <label class="form-label">Contraseña: *</label>
+                <label class="form-label">Contraseña:</label>
                 <input type="password" 
                 class="form-control form-control-solid form-control-lg"
                 name="password"
@@ -164,7 +175,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <label class="form-label">Repetir Contraseña: *</label>
+                <label class="form-label">Repetir Contraseña:</label>
                 <input type="password" 
                 class="form-control form-control-solid form-control-lg"
                 name="cpassword"
