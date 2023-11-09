@@ -45,6 +45,12 @@ export class UsersListComponent implements OnInit {
     })
   }
 
+  reset(){
+    this.state = '';
+    this.search = '';
+    this.allUsers()
+  }
+
   addUser(){
     const modalRef = this.modelService.open(AddUsersComponent, {centered: true, size: 'md'});
     modalRef.result.then(
