@@ -7,13 +7,15 @@ import { CategorieListComponent } from './categorie-list/categorie-list.componen
 import { AddCategorieComponent } from './components/add-categorie/add-categorie.component';
 import { EditCategorieComponent } from './components/edit-categorie/edit-categorie.component';
 import { DeleteCategorieComponent } from './components/delete-categorie/delete-categorie.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [CategorieComponent, CategorieListComponent, AddCategorieComponent, EditCategorieComponent, DeleteCategorieComponent],
   imports: [
     CommonModule,
-    CategorieRoutingModule
+    CategorieRoutingModule,
+    FormsModule
   ]
 })
 export class CategorieModule { }
