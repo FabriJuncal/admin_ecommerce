@@ -18,7 +18,7 @@ export class UsersService {
 
   constructor(
     private http: HttpClient,
-    public AuthService: AuthService
+    public authService: AuthService
   ) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this.isLoading$ = this.isLoadingSubject.asObservable();
@@ -26,7 +26,7 @@ export class UsersService {
 
    registration(data: UserModel){
     this.isLoadingSubject.next(true);
-    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.AuthService.token})
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
     return this.http.post<UserModel>(`${API_AUTH_URL}/register`, data, {headers: headers})
     .pipe(
       finalize(() => this.isLoadingSubject.next(false))
@@ -35,7 +35,7 @@ export class UsersService {
 
    allUsers(page = 1, state: string = '', search: string = ''){
     this.isLoadingSubject.next(true);
-    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.AuthService.token})
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
     let filter = '';
     if(state){
       filter = `${filter}&state=${state}`;
@@ -52,7 +52,7 @@ export class UsersService {
 
    update(user_id, data){
     this.isLoadingSubject.next(true);
-    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.AuthService.token})
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
     return this.http.put<UserModel>(`${API_AUTH_URL}/update/${user_id}`, data, {headers: headers})
     .pipe(
       finalize(() => this.isLoadingSubject.next(false))
@@ -61,7 +61,7 @@ export class UsersService {
 
    delete(user_id){
     this.isLoadingSubject.next(true);
-    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.AuthService.token})
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
     return this.http.delete<UserModel>(`${API_AUTH_URL}/delete/${user_id}`, {headers: headers})
     .pipe(
       finalize(() => this.isLoadingSubject.next(false))
