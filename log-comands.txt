@@ -1,0 +1,7 @@
+ng generate module modules/categorie --routing
+ng generate component modules/categorie
+ng generate service modules/categorie/_services/categorie
+ng generate component modules/categorie/categorie-list
+ng generate component modules/categorie/components/add-categorie
+ng generate component modules/categorie/components/edit-categorie
+ng generate component modules/categorie/components/delete-categorie
