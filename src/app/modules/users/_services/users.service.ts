@@ -24,16 +24,16 @@ export class UsersService {
     this.isLoading$ = this.isLoadingSubject.asObservable();
    }
 
-   registration(data: UserModel){
+  registration(data: UserModel){
     this.isLoadingSubject.next(true);
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
     return this.http.post<UserModel>(`${API_AUTH_URL}/register`, data, {headers: headers})
     .pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
-   }
+  }
 
-   allUsers(page = 1, state: string = '', search: string = ''){
+  allUsers(page = 1, state: string = '', search: string = ''){
     this.isLoadingSubject.next(true);
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
     let filter = '';
@@ -48,23 +48,23 @@ export class UsersService {
     .pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
-   }
+  }
 
-   update(user_id, data){
+  update(user_id, data){
     this.isLoadingSubject.next(true);
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
     return this.http.put<UserModel>(`${API_AUTH_URL}/update/${user_id}`, data, {headers: headers})
     .pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
-   }
+  }
 
-   delete(user_id){
+  delete(user_id){
     this.isLoadingSubject.next(true);
     const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
     return this.http.delete<UserModel>(`${API_AUTH_URL}/delete/${user_id}`, {headers: headers})
     .pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
-   }
+  }
 }

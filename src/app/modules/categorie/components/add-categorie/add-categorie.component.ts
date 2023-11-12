@@ -3,6 +3,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Toaster } from 'ngx-toast-notifications';
 import { CategorieService } from '../../_services/categorie.service';
 import { NoticyAlertComponent } from '../../../../componets/notifications/noticy-alert/noticy-alert.component';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-categorie',
@@ -18,7 +20,7 @@ export class AddCategorieComponent implements OnInit {
   isLoading = false;
 
   name: string;
-  icono: string;
+  icon: string;
   image_file: any;
   image_preview: any;
 
@@ -71,6 +73,24 @@ export class AddCategorieComponent implements OnInit {
   }
 
   save(){
+    const formData = new FormData();
+    formData.append('name', this.name);
+    formData.append('image_file', this.image_file);
+    formData.append('icon', this.icon);
+    this._categorieService.createCategorie(formData)
+    .pipe(
+      catchError((message) => {
+        this.errorMessage = message.error.errors;
+        this.toaster.open(NoticyAlertComponent, {text: `danger-${this.errorMessage}`});
+        return of(undefined);
+      })
+    ).subscribe((resp:any) => {
+      if(resp.status){
+        this.toaster.open(NoticyAlertComponent, {text: `primary-${resp.message}`});
+        this.modal.close();
+        // this.categoriesE.emit(resp.categorie);
+      }
+    });
   }
 
 }

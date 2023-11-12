@@ -5,3 +5,5 @@ ng generate component modules/categorie/categorie-list
 ng generate component modules/categorie/components/add-categorie
 ng generate component modules/categorie/components/edit-categorie
 ng generate component modules/categorie/components/delete-categorie
+ng generate component modules/categorie/components/delete-categorie
+ng generate class modules/categorie/_models/categorie.model

@@ -97,12 +97,12 @@ export class AddUsersComponent implements OnInit {
     .pipe(
       catchError((message) => {
         this.errorMessage = message.error.errors;
-        this.toaster.open(NoticyAlertComponent, {text: `danger-'${this.errorMessage}'`});
+        this.toaster.open(NoticyAlertComponent, {text: `danger-${this.errorMessage}`});
         return of(undefined);
       })
     ).subscribe((resp:any) => {
       if(resp.status){
-        this.toaster.open(NoticyAlertComponent, {text: `primary-'${resp.message}'`});
+        this.toaster.open(NoticyAlertComponent, {text: `primary-${resp.message}`});
         this.modal.close();
         this.usersE.emit(resp.user);
       }

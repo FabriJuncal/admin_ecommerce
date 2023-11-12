@@ -11,6 +11,7 @@ export const environment = {
   URL_BACKEND: 'http://localhost/',
   URL_SERVICIOS: 'http://localhost/api',
   URL_FROTEND: 'http://localhost:4200',
+  URL_IMAGE: 'http://localhost/uploads'
 };
 
 /*

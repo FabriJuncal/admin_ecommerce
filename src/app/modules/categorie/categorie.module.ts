@@ -7,15 +7,30 @@ import { CategorieListComponent } from './categorie-list/categorie-list.componen
 import { AddCategorieComponent } from './components/add-categorie/add-categorie.component';
 import { EditCategorieComponent } from './components/edit-categorie/edit-categorie.component';
 import { DeleteCategorieComponent } from './components/delete-categorie/delete-categorie.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbDatepickerModule, NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { InlineSVGModule } from 'ng-inline-svg';
+import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 
 
 @NgModule({
-  declarations: [CategorieComponent, CategorieListComponent, AddCategorieComponent, EditCategorieComponent, DeleteCategorieComponent],
+  declarations: [
+    CategorieComponent,
+    CategorieListComponent,
+    AddCategorieComponent,
+    EditCategorieComponent,
+    DeleteCategorieComponent
+  ],
   imports: [
     CommonModule,
     CategorieRoutingModule,
-    FormsModule
+    FormsModule,
+    NgbModule,
+    ReactiveFormsModule,
+    InlineSVGModule,
+    CRUDTableModule,
+    NgbModalModule,
+    NgbDatepickerModule,
   ]
 })
 export class CategorieModule { }

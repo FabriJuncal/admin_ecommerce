@@ -10,11 +10,10 @@
         <i class="icon-2x text-dark-50 flaticon-price-tag mx-2"></i> Crear Categoria
       </div>
     </div>
-    <div
-      class="overlay overlay-block cursor-default modal-body">
+    <div class="overlay overlay-block cursor-default modal-body">
       <ng-container *ngIf="isLoading$ | async">
         <div class="overlay-layer bg-transparent">
-          <div class="spinner spinner-lg spinner-success"></div>
+          <div class="spinner spinner-lg spinner-success" style="z-index: 9999"></div>
         </div>
       </ng-container>
 
@@ -46,7 +45,7 @@
               name="icono"
               placeholder="Icono"
               autocomplete="off"
-              [(ngModel)]="icono">
+              [(ngModel)]="icon">
             </div>
         </div>
       </form>
@@ -57,7 +56,14 @@
         class="btn btn-light btn-elevate mr-2"
         (click)="modal.dismiss()"
       >
-        Cancel
+        Cerrar
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary btn-elevate mr-2"
+        (click)="save()"
+      >
+        Guardar
       </button>
 
     </div>
