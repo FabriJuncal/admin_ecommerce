@@ -46,6 +46,11 @@ export class CategorieListComponent implements OnInit {
     this.allCategories(index);
   }
 
+  reset(){
+    this.search = '';
+    this.allCategories()
+  }
+
   addCategorie(){
     const modalRef = this.modelService.open(AddCategorieComponent, {centered: true, size: 'sm'});
     modalRef.result.then(
@@ -56,10 +61,16 @@ export class CategorieListComponent implements OnInit {
         
       }
     )
+    // Refrezca la tabla luego de agregar una Categoría
+    modalRef.componentInstance.categoriesE.subscribe((resp:any) => {
+      this.categories.unshift(resp);
+    });
   }
 
   editCategorie(categorie){
+    console.log('categorie->', categorie);
     const modalRef = this.modelService.open(EditCategorieComponent, {centered: true, size: 'sm'});
+    modalRef.componentInstance.categorie_selected = categorie;
     modalRef.result.then(
       () => {
 
@@ -68,10 +79,16 @@ export class CategorieListComponent implements OnInit {
         
       }
     )
+    // Refrezca la tabla luego de modificar una Categoría
+    modalRef.componentInstance.categoriesE.subscribe((resp:any) => {
+      const INDEX = this.categories.findIndex(categorie => categorie.id === resp.id);
+      this.categories[INDEX] = resp;
+    });
   }
 
   delete(categorie){
     const modalRef = this.modelService.open(DeleteCategorieComponent, {centered: true, size: 'sm'});
+    modalRef.componentInstance.categorie_selected = categorie;
     modalRef.result.then(
       () => {
 
@@ -80,6 +97,11 @@ export class CategorieListComponent implements OnInit {
         
       }
     )
+    // Refrezca la tabla luego de eliminar una Categoría
+    modalRef.componentInstance.categoriesE.subscribe((resp:any) => {
+      const INDEX = this.categories.findIndex(categorie => categorie.id === resp.id);
+      this.categories.splice(INDEX, 1);
+    });
   }
 
 }

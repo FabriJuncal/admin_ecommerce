@@ -13,7 +13,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class AddCategorieComponent implements OnInit {
 
-  @Output() usersE: EventEmitter<any> = new EventEmitter();
+  @Output() categoriesE: EventEmitter<any> = new EventEmitter();
 
   errorMessage: string;
   isLoading$;
@@ -88,7 +88,7 @@ export class AddCategorieComponent implements OnInit {
       if(resp.status){
         this.toaster.open(NoticyAlertComponent, {text: `primary-${resp.message}`});
         this.modal.close();
-        // this.categoriesE.emit(resp.categorie);
+        this.categoriesE.emit(resp.categorie);
       }
     });
   }

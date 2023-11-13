@@ -48,22 +48,22 @@ export class CategorieService {
     );
   }
 
-  // update(user_id, data){
-  //   this.isLoadingSubject.next(true);
-  //   const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
-  //   return this.http.put<UserModel>(`${API_AUTH_URL}/update/${user_id}`, data, {headers: headers})
-  //   .pipe(
-  //     finalize(() => this.isLoadingSubject.next(false))
-  //   );
-  // }
+  update(categorie_id, data){
+    this.isLoadingSubject.next(true);
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
+    return this.http.post<ListCategoriesModel>(`${API_CATEGORIE_URL}/update/${categorie_id}`, data, {headers: headers})
+    .pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
 
-  // delete(user_id){
-  //   this.isLoadingSubject.next(true);
-  //   const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
-  //   return this.http.delete<UserModel>(`${API_AUTH_URL}/delete/${user_id}`, {headers: headers})
-  //   .pipe(
-  //     finalize(() => this.isLoadingSubject.next(false))
-  //   );
-  // }
+  delete(categorie_id){
+    this.isLoadingSubject.next(true);
+    const headers = new HttpHeaders({'Authorization' : 'Bearer ' + this.authService.token})
+    return this.http.delete<ListCategoriesModel>(`${API_CATEGORIE_URL}/delete/${categorie_id}`, {headers: headers})
+    .pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
 
 }
