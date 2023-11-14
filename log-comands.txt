@@ -7,3 +7,11 @@ ng generate component modules/categorie/components/edit-categorie
 ng generate component modules/categorie/components/delete-categorie
 ng generate component modules/categorie/components/delete-categorie
 ng generate class modules/categorie/_models/categorie.model
+
+
+ng generate module modules/products --routing
+ng generate component modules/products
+ng generate component modules/products/list-products
+ng generate component modules/products/add-product
+ng generate component modules/products/edit-product
+ng generate component modules/products/delete-product

@@ -21,7 +21,7 @@ export const AsideMenuAdminGeneral = {
         page: '/users',
         submenu: [
           {
-            title: 'Gestion Usuarios',
+            title: 'Gestión Usuarios',
             page: '/users/list'
           }
         ]
@@ -34,11 +34,26 @@ export const AsideMenuAdminGeneral = {
         bullet: 'dot',
         icon: 'flaticon2-user-outline-symbol',
         svg: './assets/media/svg/icons/Shopping/Box3.svg',
-        page: '/categorias',
+        page: '/categories',
         submenu: [
           {
-            title: 'Gestion Categorias',
-            page: '/categorias/list'
+            title: 'Gestión Categorias',
+            page: '/categories/list'
+          }
+        ]
+      },
+      {
+        title: 'Productos',
+        root: true,
+        name: "Productos",
+        bullet: 'dot',
+        icon: 'flaticon2-user-outline-symbol',
+        svg: './assets/media/svg/icons/Shopping/Bag2.svg',
+        page: '/products',
+        submenu: [
+          {
+            title: 'Gestión Productos',
+            page: '/products/add-product'
           }
         ]
       },

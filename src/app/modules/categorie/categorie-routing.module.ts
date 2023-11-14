@@ -9,14 +9,14 @@ const routes: Routes = [
     component: CategorieComponent,
     children: [
       {
-        path: 'lista',
+        path: 'list',
         component: CategorieListComponent
       },
       {
-        path: '', redirectTo: 'lista', pathMatch: 'full'
+        path: '', redirectTo: 'list', pathMatch: 'full'
       },
       {
-        path: '**', redirectTo: 'lista', pathMatch: 'full'
+        path: '**', redirectTo: 'list', pathMatch: 'full'
       }
     ]
   }
